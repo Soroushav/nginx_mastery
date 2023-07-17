@@ -1,0 +1,61 @@
+services:
+  web:
+    container_name: "web"
+    build:
+      context: ./django/
+#    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn demo.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./django/:/usr/src/app/
+      - staticfiles:/usr/src/app/staticfiles
+
+    expose:
+      - 8000
+#    ports:
+#      - 8000:8000
+    env_file:
+      - ./.env/dev.env
+
+
+  nginx:
+    container_name: "nginx"
+    build:
+      context: ./nginx/
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - staticfiles:/home/app/staticfiles
+
+#  dns:
+#    container_name: "dnsbabe"
+#    build:
+#      context: ./dns/
+#    restart: always
+#    ports:
+#      - 53:53
+#      - 53:53/udp
+#    volumes:
+#      - ./dns/named.conf:/etc/bind/named.conf
+#      - ./dns/zone/:/etc/bind/zone/
+#    command: named -c /etc/bind/named.conf -g -u named
+
+#  bind9:
+#    container_name: "dns_ubuntu"
+#    build:
+#      context: ./bind/
+#    restart: unless-stopped
+#    environment:
+#      - "BIND9_USER=root"
+#    ports:
+#      - 53:53/tcp
+#      - 53:53/udp
+#    volumes:
+#      - ./bind/named.conf:/etc/bind/named.conf
+#      - ./bind/soroush-com.zone:/etc/bind/soroush-com.zone
+##    command: chmod 777 /etc/bind && named -c /etc/bind/named.conf -g
+
+
+volumes:
+  staticfiles:
+

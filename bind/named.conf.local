@@ -1,0 +1,4 @@
+zone "soroush.com" IN {
+    type master;
+    file "/etc/bind/soroush-com.zone";
+};
