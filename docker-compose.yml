@@ -1,6 +1,6 @@
 services:
-  web:
-    container_name: "web"
+  web1:
+    container_name: "web1"
     build:
       context: ./django/
 #    command: python manage.py runserver 0.0.0.0:8000
@@ -16,6 +16,22 @@ services:
     env_file:
       - ./.env/dev.env
 
+  web2:
+    container_name: "web2"
+    build:
+      context: ./django2/
+#    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn demo.wsgi:application --bind 0.0.0.0:8080
+    volumes:
+      - ./django2/:/usr/src/app/
+      - staticfiles:/usr/src/app/staticfiles
+
+    expose:
+      - 8080
+#    ports:
+#      - 8080:8080
+    env_file:
+      - ./.env/dev.env
 
   nginx:
     container_name: "nginx"
@@ -26,6 +42,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - staticfiles:/home/app/staticfiles
+
 
 #  dns:
 #    container_name: "dnsbabe"
