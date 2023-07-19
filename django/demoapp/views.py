@@ -18,6 +18,4 @@ from django.utils.cache import patch_vary_headers
 def home(request):
     response = render(request, 'page1.html')
     patch_vary_headers(response, newheaders=['User-Agent', 'Cookie'])
-    print(type(response['Vary']))
-    print(response['Vary'])
     return response
