@@ -41,6 +41,7 @@ services:
     volumes:
       - ./nginx/conf.d/:/etc/nginx/conf.d/
       - staticfiles:/home/app/staticfiles
+      - ./nginx/secure/:/home/secure/
 
 
 #  dns:
